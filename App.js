@@ -1,17 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image, Button} from 'react-native';
 import Menu from './Menu.js';
 import Request from './request.js';
+import Texto from './texto.js';
 
 export default class App extends React.Component {
+
   constructor(props){
       super(props);
       this.state = {
         data: []
       }
       this.getEvento = this.getEvento.bind(this);
-      this.getCidade = this.getCidade.bind(this);
   }
+
   componentDidMount() {
     Request.getInfo()
     .then((res) => {
@@ -21,12 +23,18 @@ export default class App extends React.Component {
       console.log(err.data);
     });
   }
-  getEvento(item) {
-    return item.evento;
+
+  getEvento(item, i) {
+    return (
+      <Texto
+        key={i}
+        evento={item.evento}
+        cidade={item.cidade}
+      />
+
+    )
   }
-  getCidade(item) {
-    return item.cidade;
-  }
+
 
   render() {
     return (
@@ -36,8 +44,7 @@ export default class App extends React.Component {
           <Text style={[styles.colorwhite]}>Teste de aplicativo da uhuu</Text>
           <Text>Aqui ficarão as informações</Text>
           <Text style={[styles.testecss]}>E aqui ficarão os Eventos</Text>
-          <Text>{this.state.data.map(this.getEvento)}</Text>
-          <Text>{this.state.data.map(this.getCidade)}</Text>
+          <View>{this.state.data.map(this.getEvento)}</View>
         </View>
       </View>
     );
@@ -47,7 +54,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'black',
   },
   testecss: {
     color: 'red',
